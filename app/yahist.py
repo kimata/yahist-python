@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     args = docopt(__doc__)
 
-    local_lib.logger.init("amazhist", level=logging.INFO)
+    local_lib.logger.init("yahist", level=logging.INFO)
 
     config_file = args["-c"]
     is_export_mode = args["-e"]

@@ -27,23 +27,19 @@ import store_yahoo.handle
 import local_lib.captcha
 import local_lib.selenium_util
 
-STATUS_ORDER_COUNT = "[collect] Number of year"
+STATUS_ORDER_COUNT = "[collect] Count of year"
 STATUS_ORDER_ITEM_ALL = "[collect] All orders"
 STATUS_ORDER_ITEM_BY_YEAR = "[collect] Year {year} orders"
 
-
 LOGIN_RETRY_COUNT = 2
 FETCH_RETRY_COUNT = 3
-
-LOGIN_URL = "https://jp.yahoo.com"
-ITEM_LIST_XPATH = '//div[@data-testid="listed-item-list"]//div[contains(@class, "merListItem")]'
 
 YAHOO_NORMAL = "yahoo.com"
 YAHOO_SHOP = "yahoo-shops.com"
 
 
-def wait_for_loading(handle, xpath='//div[@class="front-delivery-display"]', sec=2):
-    driver, wait = store_yahoo.handle.get_selenium_driver(handle)
+def wait_for_loading(handle, xpath='//div[@class="front-delivery-display"]', sec=1):
+    driver, wait = store_yahoo.handle.get_selenium_driver(handle)b
 
     wait.until(EC.visibility_of_all_elements_located((By.XPATH, xpath)))
     time.sleep(sec)
@@ -72,11 +68,8 @@ def gen_item_id_from_url(url):
 def gen_order_url_from_no(no):
     m = re.match(r"(.*)-(\d+)$", no)
     store_id = m.group(1)
-
-    return (
-        "https://odhistory.shopping.yahoo.co.jp/order-history/details?"
-        + "list-catalog={store_id}&catalog={store_id}&oid={no}".format(store_id=store_id, no=no)
-    )
+    
+    return store_yahoo.const.ORDER_URL_BY_NO.format(store_id=store_id, no=no)
 
 
 def gen_status_label_by_year(year):
@@ -390,10 +383,10 @@ def fetch_order_count(handle):
         if year >= store_yahoo.handle.get_cache_last_modified(handle).year:
             count = fetch_order_count_by_year(handle, year)
             store_yahoo.handle.set_order_count(handle, year, count)
-            logging.info("Year {year}: {count:,} orders".format(year=year, count=count))
+            logging.info("Year {year}: {count:4,} orders".format(year=year, count=count))
         else:
             count = store_yahoo.handle.get_order_count(handle, year)
-            logging.info("Year {year}: {count:,} orders [cached]".format(year=year, count=count))
+            logging.info("Year {year}: {count:4,} orders [cached]".format(year=year, count=count))
 
         total_count += count
         store_yahoo.handle.get_progress_bar(handle, STATUS_ORDER_COUNT).update()

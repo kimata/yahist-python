@@ -173,7 +173,7 @@ def set_progress_bar(handle, desc, total):
 def set_status(handle, status):
     if "status" not in handle:
         handle["status"] = handle["progress_manager"].status_bar(
-            status_format="Merhist{fill}{status}{fill}{elapsed}",
+            status_format="Yahist{fill}{status}{fill}{elapsed}",
             color="bold_bright_white_on_lightslategray",
             justify=enlighten.Justify.CENTER,
             status=status,
@@ -211,12 +211,12 @@ def load_order_info(handle):
     )
 
     # NOTE: 再開した時には巡回すべきなので削除しておく
-    for time_filter in [
+    for year in [
         datetime.datetime.now().year,
         get_cache_last_modified(handle).year,
     ]:
-        if time_filter in handle["order"]["page_stat"]:
-            del handle["order"]["page_stat"][time_filter]
+        if year in handle["order"]["page_stat"]:
+            del handle["order"]["page_stat"][year]
 
 
 def get_progress_bar(handle, desc):
