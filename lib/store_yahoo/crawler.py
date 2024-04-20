@@ -39,7 +39,7 @@ YAHOO_SHOP = "yahoo-shops.com"
 
 
 def wait_for_loading(handle, xpath='//div[@class="front-delivery-display"]', sec=1):
-    driver, wait = store_yahoo.handle.get_selenium_driver(handle)b
+    driver, wait = store_yahoo.handle.get_selenium_driver(handle)
 
     wait.until(EC.visibility_of_all_elements_located((By.XPATH, xpath)))
     time.sleep(sec)
@@ -68,7 +68,7 @@ def gen_item_id_from_url(url):
 def gen_order_url_from_no(no):
     m = re.match(r"(.*)-(\d+)$", no)
     store_id = m.group(1)
-    
+
     return store_yahoo.const.ORDER_URL_BY_NO.format(store_id=store_id, no=no)
 
 
