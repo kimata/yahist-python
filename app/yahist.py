@@ -40,7 +40,7 @@ def execute(config, is_export_mode=False):
     try:
         if not is_export_mode:
             execute_fetch(handle)
-        store_yahoo.order_history.generate_table_excel(handle, config["output"]["excel"]["table"])
+        store_yahoo.order_history.generate_table_excel(handle, store_yahoo.handle.get_excel_file_path(handle))
 
         store_yahoo.handle.finish(handle)
     except:
