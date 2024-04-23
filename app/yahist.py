@@ -4,11 +4,12 @@
 Yahoo!ストアの購入履歴情報を収集して，Excel ファイルとして出力します．
 
 Usage:
-  yahist.py [-c CONFIG] [-e]
+  yahist.py [-c CONFIG] [-e] [-N]
 
 Options:
   -c CONFIG    : CONFIG を設定ファイルとして読み込んで実行します．[default: config.yaml]
   -e           : データ収集は行わず，Excel ファイルの出力のみ行います．
+  -N            : サムネイル画像を含めないようにします．
 """
 
 import logging
@@ -34,13 +35,15 @@ def execute_fetch(handle):
         raise
 
 
-def execute(config, is_export_mode=False):
+def execute(config, is_export_mode=False, is_need_thumb=True):
     handle = store_yahoo.handle.create(config)
 
     try:
         if not is_export_mode:
             execute_fetch(handle)
-        store_yahoo.order_history.generate_table_excel(handle, store_yahoo.handle.get_excel_file_path(handle))
+        store_yahoo.order_history.generate_table_excel(
+            handle, store_yahoo.handle.get_excel_file_path(handle), is_need_thumb
+        )
 
         store_yahoo.handle.finish(handle)
     except:
@@ -64,10 +67,11 @@ if __name__ == "__main__":
 
     config_file = args["-c"]
     is_export_mode = args["-e"]
+    is_need_thumb = not args["-N"]
 
     config = local_lib.config.load(args["-c"])
 
     try:
-        execute(config, is_export_mode)
+        execute(config, is_export_mode, is_need_thumb)
     except:
         logging.error(traceback.format_exc())
