@@ -34,9 +34,6 @@ STATUS_ORDER_ITEM_BY_YEAR = "[collect] Year {year} orders"
 LOGIN_RETRY_COUNT = 2
 FETCH_RETRY_COUNT = 3
 
-YAHOO_NORMAL = "yahoo.com"
-YAHOO_SHOP = "yahoo-shops.com"
-
 
 def wait_for_loading(handle, xpath='//div[@class="front-delivery-display"]', sec=1):
     driver, wait = store_yahoo.handle.get_selenium_driver(handle)
